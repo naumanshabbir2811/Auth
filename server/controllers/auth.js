@@ -1,5 +1,6 @@
 const UserModal = require('../modal/userModal');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const addNewUser = async (req, res) => {
   try {
     const hashedPassword = bcrypt.hashSync(req.body.password, 6);
@@ -31,7 +32,17 @@ const loginUser = async (req, res) => {
     res.status(402).json({ message: 'password does not match' });
     return;
   }
-  res.status(201).json({ message: 'user Signed In' });
+  const token = jwt.sign(
+    {
+      fullName: user.fullName,
+      email: user.email,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: '2h',
+    }
+  );
+  res.status(201).json({ message: 'user Signed In', token });
 };
 
 const getAllUsers = async (req, res) => {

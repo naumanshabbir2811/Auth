@@ -7,6 +7,11 @@ function SignUp() {
   const [password, setPassword] = React.useState('');
   const handleCheckLogin = async e => {
     e.preventDefault();
+    console.log({
+      fullName: fullName,
+      email: email,
+      password: password,
+    });
     const responce = await fetch('http://localhost:3001/auth/signup', {
       method: 'POST',
       headers: {
@@ -69,6 +74,10 @@ function SignUp() {
                 className="form-control"
                 id="floatingPassword"
                 placeholder="Password"
+                value={password}
+                onChange={e => {
+                  setPassword(e.target.value);
+                }}
               />
               <label htmlFor="floatingPassword">Password</label>
             </div>
@@ -77,8 +86,6 @@ function SignUp() {
                 className="form-check-input p-2"
                 type="checkbox"
                 id="flexCheckDefault"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
               />
               <label
                 className="form-check-label label_mar mx-2"
